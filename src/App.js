@@ -1,16 +1,19 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Dishes from "./shared/dishes";
+
 import { Navbar, NavbarBrand } from "reactstrap";
-function App() {
-  return (
-    <div className="App">
-      <Navbar dark color="dark">
-        <NavbarBrand>HI</NavbarBrand>
-      </Navbar>
-      <Dishes />
-    </div>
-  );
+import { Component } from "react";
+import Main from "./component/MainComponent";
+class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div className="App">
+        <Main />
+      </div>
+    );
+  }
 }
 
 export default App;
