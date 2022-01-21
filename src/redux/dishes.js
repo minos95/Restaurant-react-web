@@ -10,7 +10,7 @@ export const Dishes = (
 
     case ActionTypes.DISHES_LOADING:
       return { ...state, isLoading: true, err: null, dishes: [] };
-    case ActionTypes.DISHES_LOADING:
+    case ActionTypes.DISHES_FAILED:
       return { ...state, isLoading: false, err: action.payload, dishes: [] };
 
     default:

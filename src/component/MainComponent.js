@@ -11,12 +11,15 @@ import Contact from "./ContactComponent";
 import About from "./AboutComponent";
 import { connect } from "react-redux";
 import {
-  addComment,
+  postComment,
   fetchComments,
   fetchDishes,
   fetchPromos,
+  fetchLeaders,
+  postFeedback,
 } from "../redux/actionCreators";
 import { actions } from "react-redux-form";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 const mapStateToProps = (state) => {
   return {
     dishes: state.dishes,
@@ -26,8 +29,28 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  addComment: (dishId, rating, author, comment) =>
-    dispatch(addComment(dishId, rating, author, comment)),
+  postComment: (dishId, rating, author, comment) =>
+    dispatch(postComment(dishId, rating, author, comment)),
+  postFeedback: (
+    firstName,
+    lastName,
+    telnum,
+    email,
+    agree,
+    contactType,
+    message
+  ) =>
+    dispatch(
+      postFeedback(
+        firstName,
+        lastName,
+        telnum,
+        email,
+        agree,
+        contactType,
+        message
+      )
+    ),
   fetchDishes: () => {
     dispatch(fetchDishes());
   },
@@ -36,6 +59,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   fetchComments: () => dispatch(fetchComments()),
   fetchPromos: () => dispatch(fetchPromos()),
+  fetchLeaders: () => dispatch(fetchLeaders()),
 });
 
 class Main extends Component {
@@ -46,6 +70,7 @@ class Main extends Component {
     this.props.fetchDishes();
     this.props.fetchComments();
     this.props.fetchPromos();
+    this.props.fetchLeaders();
   }
 
   onDishSelect(dishId) {
@@ -68,7 +93,7 @@ class Main extends Component {
             (comment) => comment.dishId === parseInt(match.params.dishId, 10)
           )}
           commentsErrMess={this.props.comments.errMess}
-          addComment={this.props.addComment}
+          postComment={this.props.postComment}
         />
       );
     };
@@ -85,7 +110,11 @@ class Main extends Component {
           }
           promoLoading={this.props.promotions.isLoading}
           promoErrMess={this.props.promotions.errMess}
-          leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+          leader={
+            this.props.leaders.leaders.filter((leader) => leader.featured)[0]
+          }
+          leaderLoading={this.props.leaders.isLoading}
+          leaderErrMess={this.props.leaders.err}
         />
       );
     };
@@ -93,30 +122,48 @@ class Main extends Component {
     return (
       <div className="App">
         <Header />
-        <Switch>
-          <Route path="/home" component={HomePage} />
-          <Route
-            exact
-            path="/menu"
-            component={() => (
-              <Menu
-                dishes={this.props.dishes}
-                onClick={(dishId) => this.onDishSelect(dishId)}
+
+        <TransitionGroup>
+          <CSSTransition
+            key={this.props.location.key}
+            classNames="page"
+            timeout={300}
+          >
+            <Switch>
+              <Route path="/home" component={HomePage} />
+              <Route
+                exact
+                path="/menu"
+                component={() => (
+                  <Menu
+                    dishes={this.props.dishes}
+                    onClick={(dishId) => this.onDishSelect(dishId)}
+                  />
+                )}
               />
-            )}
-          />
-          <Route
-            path="/contactus"
-            component={() => (
-              <Contact resetFeedbackForm={this.props.resetFeedbackForm} />
-            )}
-          />
-          <Route path="/menu/:dishId" component={DishWithId} />
-          <Route
-            path={"/aboutus"}
-            component={() => <About leaders={this.props.leaders} />}
-          />
-        </Switch>
+              <Route
+                path="/contactus"
+                component={() => (
+                  <Contact
+                    resetFeedbackForm={this.props.resetFeedbackForm}
+                    postFeedback={this.props.postFeedback}
+                  />
+                )}
+              />
+              <Route path="/menu/:dishId" component={DishWithId} />
+              <Route
+                path={"/aboutus"}
+                component={() => (
+                  <About
+                    leaders={this.props.leaders.leaders}
+                    leaderLoading={this.props.leaders.isLoading}
+                    leaderErrMess={this.props.leaders.err}
+                  />
+                )}
+              />
+            </Switch>
+          </CSSTransition>
+        </TransitionGroup>
         <Footer />
       </div>
     );

@@ -8,13 +8,16 @@ import {
   Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Loading } from "./LoadingComponent";
+import { baseUrl } from "../shared/baseURL";
+import { Fade } from "react-animation-components";
 
 function RenderLeader({ leader }) {
   return (
     <>
       <Media className="row mt-3">
         <Media className="col-12 col-md-1 m-4 mt-0">
-          <Media object src={leader.image} />
+          <Media object src={baseUrl + leader.image} />
         </Media>
         <Media className="col-10 " body>
           <Media heading>{leader.name}</Media>
@@ -28,9 +31,27 @@ function RenderLeader({ leader }) {
 }
 
 function About(props) {
-  const leaders = props.leaders.map((leader) => {
-    return <RenderLeader leader={leader} />;
-  });
+  var leaders = "";
+  if (props.leaderLoading) {
+    leaders = (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  } else if (props.leaderErrMess) {
+    leaders = (
+      <div className="container">
+        <div className="row">
+          <h4>{props.leaderErrMess}</h4>
+        </div>
+      </div>
+    );
+  } else if (props.leaders != null)
+    leaders = props.leaders.map((leader) => {
+      return <RenderLeader leader={leader} />;
+    });
 
   return (
     <div className="container">
@@ -107,7 +128,9 @@ function About(props) {
         <div className="col-12">
           <h2>Corporate Leadership</h2>
         </div>
-        <div className="col-12">{leaders}</div>
+        <Fade in enterOpacity={0.85}>
+          <div className="col-12">{leaders}</div>
+        </Fade>
       </div>
     </div>
   );

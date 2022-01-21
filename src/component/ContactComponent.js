@@ -43,8 +43,16 @@ class Contact extends Component {
   }
 
   handleSubmit(values) {
-    console.log("Current State is: " + JSON.stringify(values));
-    alert("Current State is: " + JSON.stringify(values));
+    this.props.postFeedback(
+      values.firstname,
+      values.lastname,
+      values.telnum,
+      values.email,
+      values.agree,
+      values.contactType,
+      values.feedback
+    );
+
     this.props.resetFeedbackForm();
     // event.preventDefault();
   }
@@ -221,6 +229,23 @@ class Contact extends Component {
                   required: "Required",
                   validEmail: "Invalid Email Address",
                 }}
+              />
+            </Col>
+          </Row>
+          <Row className="form-group mt-3 ">
+            <Label htmlFor="email" md={2}>
+              Receive message ?
+            </Label>
+            <Col md={1}>
+              <Control.checkbox model=".agree" id="agree" name="agree" />
+            </Col>
+            <Col md={2}>
+              <Control.text
+                model=".contactType"
+                id="contactType"
+                name="contactType"
+                className="form-control"
+                value={"tel"}
               />
             </Col>
           </Row>

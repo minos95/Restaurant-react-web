@@ -29,7 +29,7 @@ function renderDish(dish) {
     <div></div>
   );
 }
-function RenderComments({ comments, addComment, dishId }) {
+function RenderComments({ comments, postComment, dishId }) {
   if (comments.length !== 0 || typeof comments != "undefined") {
     return (
       <div>
@@ -45,7 +45,7 @@ function RenderComments({ comments, addComment, dishId }) {
             );
           })}
         </ul>
-        <CommentForm addComment={addComment} dishId={dishId} />
+        <CommentForm postComment={postComment} dishId={dishId} />
       </div>
     );
   } else {
@@ -77,12 +77,7 @@ class CommentForm extends Component {
 
   handleSubmit(values) {
     this.toggleModal();
-    this.props.addComment(
-      this.props.dishId,
-      values.rating,
-      values.author,
-      values.comment
-    );
+    this.props.postComment(values.rating, values.author, values.comment);
   }
 
   render() {
@@ -187,7 +182,7 @@ const DishDetail = (props) => {
               {typeof props.selectedDish !== "undefined" ? (
                 <RenderComments
                   comments={props.comments}
-                  addComment={props.addComment}
+                  postComment={props.postComment}
                   dishId={props.selectedDish.id}
                 />
               ) : (
