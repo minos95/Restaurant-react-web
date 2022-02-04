@@ -171,19 +171,17 @@ const DishDetail = (props) => {
             <BreadcrumbItem>
               <Link to="/menu">Menu</Link>
             </BreadcrumbItem>
-            <BreadcrumbItem active>{props.selectedDish.name}</BreadcrumbItem>
+            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
           </Breadcrumb>
-          <div className="col-12  col-md-5 m-1">
-            {renderDish(props.selectedDish)}
-          </div>
+          <div className="col-12  col-md-5 m-1">{renderDish(props.dish)}</div>
           <div className="col-12 col-md-5 m-1">
             <h4>Comments</h4>
             <ul className="list-unstyled">
-              {typeof props.selectedDish !== "undefined" ? (
+              {typeof props.dish !== "undefined" ? (
                 <RenderComments
                   comments={props.comments}
                   postComment={props.postComment}
-                  dishId={props.selectedDish.id}
+                  dishId={props.dish.id}
                 />
               ) : (
                 <div></div>
