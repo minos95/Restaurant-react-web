@@ -19,7 +19,7 @@ Get a local copy up and follow this steps
 - Open the terminal and start a app with 'yarn start'
 - Open http://localhost:3001 in your browser
 
-## Assignement
+## I implemented these things:
 -Connected to the JSON SERVER API to send and receive data
 -With routes for each of the screens, so the user can easily go back and forward
 -Use Redux to store info used across the app, like the rating, comment, dishes ...
