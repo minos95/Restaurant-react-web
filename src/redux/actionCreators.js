@@ -23,7 +23,6 @@ export const postFeedback =
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
     })
       .then(
         (response) => {
