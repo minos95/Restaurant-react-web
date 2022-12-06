@@ -1,1 +1,1 @@
-export const baseUrl = "https://dishes-server-json.herokuapp.com/";
+export const baseUrl = "https://dishes-app-server.onrender.com/";
