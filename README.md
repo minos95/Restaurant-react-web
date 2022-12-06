@@ -1,4 +1,4 @@
-# Reastaurant react web app
+# Dishes react web app
 ![screenshot](./screenshot.png)
 ## Build with
 - React
